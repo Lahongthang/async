@@ -55,8 +55,8 @@ function App() {
   }
 
   useEffect(() => {
-    // fetch1()
-    fetch2()
+    fetch1()
+    // fetch2()
   }, [])
 
   // fetch2()
