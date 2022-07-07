@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import App1 from './App1';
 import App2 from './App2';
+import UseFormYup from './UseFormYup';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

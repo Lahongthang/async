@@ -1,4 +1,6 @@
 import {useState, useEffect} from 'react'
+import Form from './Form'
+
 export const headers = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
   'Accept': 'application/json'
@@ -17,7 +19,7 @@ function App() {
   }
 
   const fetch1 = () => {
-    fetchColor(17)
+    fetchColor(1)
       .then(res => res.json())
       .then(color => {
         console.log('color: ', color)
@@ -37,7 +39,7 @@ function App() {
 
   const fetch2 = () => {
     let colorName
-    fetchColor(17)
+    fetchColor(1)
       .then(res => res.json())
       .then(color => {
         console.log('color: ', color)
@@ -68,6 +70,7 @@ function App() {
 
   return (
     <div className="App">
+      {/* <Form/> */}
       <table>
         <thead>
           <tr>

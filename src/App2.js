@@ -1,42 +1,62 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-
-const schema = yup.object().shape({
-  email: yup.string().email().required(),
-  password: yup.string().min(8).max(32).required(),
-});
+import {useState, useEffect} from 'react'
+import { headers } from "./App"
 
 const App2 = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    resolver: yupResolver(schema),
-  });
-  const onSubmitHandler = (data) => {
-    console.log({ data });
-    reset();
-  };
-  return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <h2>Lets sign you in.</h2>
-      <br />
+    const [todos, setTodos] = useState([])
 
-      <input {...register("email")} placeholder="email" type="email" required />
-      <p>{errors.email?.message}</p>
-      <br />
+    const fetchColor = async id => {
+        return fetch(`http://localhost:8000/api/colors/${id}`, {headers})
+            .then(response => response.json())
+            .then(color => color)
+            .catch(error => {throw new Error(error)})
+    }
 
-      <input
-        {...register("password")}
-        placeholder="password"
-        type="password"
-        required
-      />
-      <p>{errors.password?.message}</p>
-      <br />
+    const status = new Promise((resolve, reject) => {
+        setTimeout(resolve, 1000, 'completed')
+    })
 
-      <button type="submit">Sign in</button>
-    </form>
-  );
-};
+    const fetchTodos = (color, status) => {
+        return fetch(`http://localhost:8000/api/todos?pageSize=100&colors=${color}&status=${status}`, {headers})
+    }
 
-export default App2;
+    useEffect(() => {
+        Promise.all([fetchColor(1), status]).then(value => {
+            console.log('value: ', value)
+            fetchTodos(value[0].data.id, value[1])
+                .then(response => response.json())
+                .then(todos => {
+                    console.log('todos: ', todos)
+                    setTodos(todos.data)
+                })
+                .catch(error => {throw new Error(error)})
+        })
+    }, [])
+
+    return (
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Text</th>
+                        <th>Color</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {todos.map(todo => (
+                        <tr key={todo.id}>
+                            <td>{todo.id}</td>
+                            <td>{todo.text}</td>
+                            <td>{todo.color?.name}</td>
+                            <td>{todo.completed ? 'completed' : 'active'}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {/* <button>Re Fetch</button> */}
+        </div>
+    )
+}
+
+export default App2

@@ -14,7 +14,7 @@ const App1 = () => {
     }
 
     const fetchData = async () => {
-        const response1 = await fetchColor(17)
+        const response1 = await fetchColor(1)
         const color = await response1.data
         console.log('color: ', color)
 
@@ -42,9 +42,9 @@ const App1 = () => {
                 <tbody>
                     {todos.map(todo => (
                         <tr key={todo.id}>
-                        <td>{todo.id}</td>
-                        <td>{todo.text}</td>
-                        <td>{todo.color?.name}</td>
+                            <td>{todo.id}</td>
+                            <td>{todo.text}</td>
+                            <td>{todo.color?.name}</td>
                         </tr>
                     ))}
                 </tbody>
